@@ -2,6 +2,7 @@ import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 import { ObjectId } from 'mongodb'
 import { getCollection } from '../db.js'
+import verifyToken from '../middleware/verifyToken.js'
 
 const router = Router()
 
@@ -54,6 +55,10 @@ router.post('/jwt', async (req, res) => {
   res
     .cookie('token', token, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 })
     .send({ success: true, user: payload })
+})
+
+router.get('/me', verifyToken, (req, res) => {
+  res.send(req.user)
 })
 
 router.post('/logout', (req, res) => {
