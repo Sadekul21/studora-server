@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import 'dotenv/config'
 import { connectDB } from './db.js'
 import authRoutes from './routes/auth.js'
+import studioRoutes from './routes/studios.js'
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 })
 
 app.use(authRoutes)
+app.use(studioRoutes)
 
 connectDB()
   .then(() => {
