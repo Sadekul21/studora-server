@@ -5,6 +5,7 @@ import 'dotenv/config'
 import { connectDB } from './db.js'
 import authRoutes from './routes/auth.js'
 import studioRoutes from './routes/studios.js'
+import bookingRoutes from './routes/bookings.js'
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use(authRoutes)
 app.use(studioRoutes)
+app.use(bookingRoutes)
 
 connectDB()
   .then(() => {
