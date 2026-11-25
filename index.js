@@ -21,16 +21,24 @@ app.get('/', (req, res) => {
   res.send('Studora server is running')
 })
 
+app.use(async (req, res, next) => {
+  try {
+    await connectDB()
+    next()
+  } catch (error) {
+    console.error('Could not connect to MongoDB', error)
+    res.status(500).send({ message: 'Database connection failed' })
+  }
+})
+
 app.use(authRoutes)
 app.use(studioRoutes)
 app.use(bookingRoutes)
 
-connectDB()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Studora server listening on port ${port}`)
-    })
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Studora server listening on port ${port}`)
   })
-  .catch((error) => {
-    console.error('Could not connect to MongoDB', error)
-  })
+}
+
+export default app
